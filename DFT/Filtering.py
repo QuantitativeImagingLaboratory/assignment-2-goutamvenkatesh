@@ -64,9 +64,14 @@ class Filtering:
         cutoff: the cutoff frequency of the butterworth filter
         order: the order of the butterworth filter
         returns a butterworth low pass mask"""
-
         
-        return 0
+        mask=np.zeros(shape)
+        center=(shape[0]/2,shape[1]/2)
+        for i in range(shape[0]):
+            for j in range(shape[1]):
+                mask[i,j]=1/(1+np.power((dist([i,j],center)/cutoff),2*order))
+
+        return mask
 
     def get_butterworth_high_pass_filter(self, shape, cutoff, order):
         """Computes a butterworth high pass mask
