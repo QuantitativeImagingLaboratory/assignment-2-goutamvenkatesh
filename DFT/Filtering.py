@@ -100,11 +100,12 @@ class Filtering:
         returns a gaussian low pass mask"""
         
         mask=np.zeros(shape.np.float)
+        sigma=cutoff
         center=[shape[0]/2,shape[1]/2]
         for i in range(shape[0]):
             for j in range(shape[1]):
 
-                mask[i, j] = np.exp(-(dist([i, j], center) ** 2) / (2 * (cutoff ** 2)))
+                mask[i, j] = np.exp(-(dist([i, j], center) ** 2) / (2 * (sigma ** 2)))
 
 
         
@@ -121,11 +122,12 @@ class Filtering:
         #Hint: May be one can use the low pass filter function to get a high pass mask
 
         mask=np.zeros(shape.np.float)
+        sigma=cutoff
         center=[shape[0]/2,shape[1]/2]
         for i in range(shape[0]):
             for j in range(shape[1]):
 
-                mask[i, j] = 1-np.exp(-(dist([i, j], center) ** 2) / (2 * (cutoff ** 2)))
+                mask[i, j] = 1-np.exp(-(dist([i, j], center) ** 2) / (2 * (sigma ** 2)))
 
 
         
