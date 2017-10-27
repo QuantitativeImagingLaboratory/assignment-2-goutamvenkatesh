@@ -65,7 +65,7 @@ class Filtering:
         order: the order of the butterworth filter
         returns a butterworth low pass mask"""
         
-        mask=np.zeros(shape)
+        mask=np.zeros(shape.np.float)
         center=(shape[0]/2,shape[1]/2)
         for i in range(shape[0]):
             for j in range(shape[1]):
