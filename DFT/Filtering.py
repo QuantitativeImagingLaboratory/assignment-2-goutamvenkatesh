@@ -82,9 +82,15 @@ class Filtering:
         returns a butterworth high pass mask"""
 
         #Hint: May be one can use the low pass filter function to get a high pass mask
-
         
-        return 0
+        mask=np.zeros(shape)
+        center=(shape[0]/2,shape[1]/2)
+        for i in range(shape[0]):
+            for j in range(shape[1]):
+                mask[i,j]=1/(1+np.power(cutoff/(dist([i,j],center)),2*order))
+
+        return mask
+
 
     def get_gaussian_low_pass_filter(self, shape, cutoff):
         """Computes a gaussian low pass mask
