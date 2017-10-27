@@ -66,7 +66,7 @@ class Filtering:
         returns a butterworth low pass mask"""
         
         mask=np.zeros(shape.np.float)
-        center=(shape[0]/2,shape[1]/2)
+        center=[shape[0]/2,shape[1]/2]
         for i in range(shape[0]):
             for j in range(shape[1]):
                 mask[i,j]=1/(1+np.power((dist([i,j],center)/cutoff),2*order))
@@ -83,8 +83,8 @@ class Filtering:
 
         #Hint: May be one can use the low pass filter function to get a high pass mask
         
-        mask=np.zeros(shape)
-        center=(shape[0]/2,shape[1]/2)
+        mask=np.zeros(shape.np.float)
+        center=[shape[0]/2,shape[1]/2]
         for i in range(shape[0]):
             for j in range(shape[1]):
                 mask[i,j]=1/(1+np.power(cutoff/(dist([i,j],center)),2*order))
@@ -98,9 +98,18 @@ class Filtering:
         shape: the shape of the mask to be generated
         cutoff: the cutoff frequency of the gaussian filter (sigma)
         returns a gaussian low pass mask"""
+        
+        mask=np.zeros(shape.np.float)
+        center=[shape[0]/2,shape[1]/2]
+        for i in range(shape[0]):
+            for j in range(shape[1]):
+
+                mask[i, j] = np.exp(-(dist([i, j], center) ** 2) / (2 * (cutoff ** 2)))
+
 
         
-        return 0
+        return mask
+        
 
     def get_gaussian_high_pass_filter(self, shape, cutoff):
         """Computes a gaussian high pass mask
@@ -111,8 +120,16 @@ class Filtering:
 
         #Hint: May be one can use the low pass filter function to get a high pass mask
 
+        mask=np.zeros(shape.np.float)
+        center=[shape[0]/2,shape[1]/2]
+        for i in range(shape[0]):
+            for j in range(shape[1]):
+
+                mask[i, j] = 1-np.exp(-(dist([i, j], center) ** 2) / (2 * (cutoff ** 2)))
+
+
         
-        return 0
+        return mask
 
     def post_process_image(self, image):
         """Post process the image to create a full contrast stretch of the image
