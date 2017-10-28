@@ -44,8 +44,8 @@ class Filtering:
         center = [shape[0] / 2, shape[1] / 2]
         mask = np.zeros(shape.np.float)
         rows, cols = shape
-        for i in rows:
-            for j in cols:
+        for i in range(rows):
+            for j in range(cols):
                 if ((i-(center[0]/2))**2+(j-(center[1]/2))**2)**0.5 <=cutoff:
                     mask[i,j]=1
 
@@ -68,8 +68,8 @@ class Filtering:
         center = [shape[0] / 2, shape[1] / 2]
         mask = np.zeros(shape.np.float)
         rows, cols = shape
-        for i in rows:
-            for j in cols:
+        for i in range(rows):
+            for j in range(cols):
                 if ((i-(center[0]/2))**2+(j-(center[1]/2))**2)**0.5 <=cutoff:
                     mask[i,j]=0
 
