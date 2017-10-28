@@ -40,9 +40,20 @@ class Filtering:
         shape: the shape of the mask to be generated
         cutoff: the cutoff frequency of the ideal filter
         returns a ideal low pass mask"""
+        
+        center = [shape[0] / 2, shape[1] / 2]
+        mask = np.zeros(shape.np.float)
+        rows, cols = shape
+        for i in rows:
+            for j in cols:
+                if ((i-(center[0]/2))**2+(j-(center[1]/2))**2)**0.5 <=cutoff:
+                    mask[i,j]=1
+
+                else:
+                    mask[i,j]=0
 
 
-        return 0
+        return mask
 
 
     def get_ideal_high_pass_filter(self, shape, cutoff):
@@ -53,9 +64,21 @@ class Filtering:
         returns a ideal high pass mask"""
 
         #Hint: May be one can use the low pass filter function to get a high pass mask
+        
+        center = [shape[0] / 2, shape[1] / 2]
+        mask = np.zeros(shape.np.float)
+        rows, cols = shape
+        for i in rows:
+            for j in cols:
+                if ((i-(center[0]/2))**2+(j-(center[1]/2))**2)**0.5 <=cutoff:
+                    mask[i,j]=0
+
+                else:
+                    mask[i,j]=1
 
         
-        return 0
+        return mask
+
 
     def get_butterworth_low_pass_filter(self, shape, cutoff, order):
         """Computes a butterworth low pass mask
@@ -166,6 +189,8 @@ class Filtering:
         Note: You do not have to do zero padding as discussed in class, the inbuilt functions takes care of that
         filtered image, magnitude of DFT, magnitude of filtered DFT: Make sure all images being returned have grey scale full contrast stretch and dtype=uint8 
         """
+        
+        
 
 
 
