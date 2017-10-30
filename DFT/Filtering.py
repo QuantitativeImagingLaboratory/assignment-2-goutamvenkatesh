@@ -7,6 +7,9 @@ class Filtering:
     filter = None
     cutoff = None
     order = None
+    
+    def dist(x,y):   
+    return numpy.sqrt(numpy.sum((x-y)**2))
 
     def __init__(self, image, filter_name, cutoff, order = 0):
         """initializes the variables frequency filtering on an input image
@@ -92,7 +95,7 @@ class Filtering:
         center=[shape[0]/2,shape[1]/2]
         for i in range(shape[0]):
             for j in range(shape[1]):
-                mask[i,j]=1/(1+np.power((dist([i,j],center)/cutoff),2*order))
+                mask[i,j]=1/(1+np.power((self.dist([i,j],center)/cutoff),2*order))
 
         return mask
 
@@ -110,7 +113,7 @@ class Filtering:
         center=[shape[0]/2,shape[1]/2]
         for i in range(shape[0]):
             for j in range(shape[1]):
-                mask[i,j]=1/(1+np.power(cutoff/(dist([i,j],center)),2*order))
+                mask[i,j]=1/(1+np.power(cutoff/(self.dist([i,j],center)),2*order))
 
         return mask
 
@@ -128,7 +131,7 @@ class Filtering:
         for i in range(shape[0]):
             for j in range(shape[1]):
 
-                mask[i, j] = np.exp(-(dist([i, j], center) ** 2) / (2 * (sigma ** 2)))
+                mask[i, j] = np.exp(-(self.dist([i, j], center) ** 2) / (2 * (sigma ** 2)))
 
 
         
@@ -150,7 +153,7 @@ class Filtering:
         for i in range(shape[0]):
             for j in range(shape[1]):
 
-                mask[i, j] = 1-np.exp(-(dist([i, j], center) ** 2) / (2 * (sigma ** 2)))
+                mask[i, j] = 1-np.exp(-(self.dist([i, j], center) ** 2) / (2 * (sigma ** 2)))
 
 
         
