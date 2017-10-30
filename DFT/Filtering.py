@@ -8,7 +8,7 @@ class Filtering:
     cutoff = None
     order = None
     
-    def dist(x,y):   
+    def dist(self,x,y):   
         return numpy.sqrt(numpy.sum((x-y)**2))
 
     def __init__(self, image, filter_name, cutoff, order = 0):
