@@ -9,7 +9,7 @@ class Filtering:
     order = None
     
     def dist(x,y):   
-    return numpy.sqrt(numpy.sum((x-y)**2))
+        return numpy.sqrt(numpy.sum((x-y)**2))
 
     def __init__(self, image, filter_name, cutoff, order = 0):
         """initializes the variables frequency filtering on an input image
