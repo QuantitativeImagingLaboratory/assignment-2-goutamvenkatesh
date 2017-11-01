@@ -10,10 +10,10 @@ class DFT:
         matrix: a 2d matrix
         returns a complex matrix representing fourier transform"""
         
-        input_matrix = np.int_(rand(15, 15) * 256)
-        outputDFT=np.zeros((15,15), dtype=complex)
-        outputIFT=np.zeros((15,15), dtype=complex)
-        outMat=np.zeros((15,15))
+        
+        output=np.zeros((15,15), dtype=complex)
+        
+        
         
 
         for u in range(0,15):
@@ -27,11 +27,11 @@ class DFT:
                         x=2.0 * math.pi * y
                         angle = x/ 15
                         expcal=math.cos(angle) - 1j *math.sin(angle)
-                        total_sum += input[i,j] * expcal
+                        total_sum += matrix[i,j] * expcal
                     
 
             
-                output[u,v]=sumValue
+                output[u,v]=total_sum
 
             
 
