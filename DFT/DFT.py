@@ -88,8 +88,6 @@ class DFT:
 
 
 
-        return matrix
-
 
     def magnitude(self, matrix):
         """Computes the magnitude of the DFT
