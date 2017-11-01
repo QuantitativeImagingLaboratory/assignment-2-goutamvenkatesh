@@ -59,6 +59,32 @@ class DFT:
         takes as input:
         matrix: a 2d matrix
         returns a matrix representing discrete cosine transform"""
+        
+        output=np.zeros((15,15), dtype=complex)
+        
+        
+        
+
+        for u in range(0,15):
+            for v in range(0,15):
+                total_sum = 0
+                for i in range(0,15):
+                    for j in range(0,15):
+                        t=u*i
+                        k=v*j
+                        y=t + k
+                        x=2.0 * math.pi * y
+                        angle = x/ 15
+                        expcal=math.cos(angle)
+                        total_sum += matrix[i,j] * expcal
+                    
+
+            
+                output[u,v]=total_sum
+
+            
+
+        return output
 
 
 
