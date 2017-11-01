@@ -69,7 +69,7 @@ class Filtering:
         #Hint: May be one can use the low pass filter function to get a high pass mask
         
         center = [shape[0] / 2, shape[1] / 2]
-        mask = np.zeros(shape.np.float)
+        mask = np.zeros(shape)
         rows, cols = shape
         for i in range(rows):
             for j in range(cols):
