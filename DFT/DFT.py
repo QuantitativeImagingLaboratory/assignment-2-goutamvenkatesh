@@ -1,6 +1,7 @@
 # For this part of the assignment, please implement your own code for all computations,
 # Do not use inbuilt functions like fft from either numpy, opencv or other libraries
-
+import numpy as np
+import math
 
 class DFT:
 
