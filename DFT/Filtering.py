@@ -1,6 +1,9 @@
 # For this part of the assignment, You can use inbuilt functions to compute the fourier transform
 # You are welcome to use fft that are available in numpy and opencv
 
+import numpy as np
+import math
+
 
 class Filtering:
     image = None
@@ -8,8 +11,7 @@ class Filtering:
     cutoff = None
     order = None
     
-    def dist(self,x,y):   
-        return numpy.sqrt(numpy.sum((x-y)**2))
+    
 
     def __init__(self, image, filter_name, cutoff, order = 0):
         """initializes the variables frequency filtering on an input image
@@ -206,9 +208,41 @@ class Filtering:
         filtered image, magnitude of DFT, magnitude of filtered DFT: Make sure all images being returned have grey scale full contrast stretch and dtype=uint8 
         """
         
+        dft_image = np.fft.fft2(self.image)
+        image_shift = np.fft.fftshift(dft_image)
+        mask = self.filter(np.shape(image_shift), self.cutoff) # there is a problem here. check once
+        filtered_image = mask * image_shift
+        inverse_shift = np.fft.ifftshift(filtered_image)
+        filtered_image2 = np.fft.ifft2(inverse_shift)
+        ImgRows, ImgCols = filtered_image2.shape
+
+        outMat = np.zeros((ImgRows, ImgCols), np.uint8)
+        finalImg = np.zeros((ImgRows, ImgCols), np.uint8)
+
+        for u in range(0, ImgRows):
+            for v in range(0, ImgCols):
+                outMat[u, v] = np.absolute(filtered_image2[u, v])
+
+        B = np.amax(outMat)
+        A = np.amin(outMat)
+
+        difInt = B - A
+        for u in range(0, ImgRows):
+            for v in range(0, ImgCols):
+                firstMul = 255 / difInt
+                finalVal = firstMul * (outMat[u, v] - A)
+                finalImg[u, v] = int(np.round(finalVal))
+
+        for i in range(ImgRows):
+            for j in range(ImgCols):
+                if(mask[i,j]!=0):
+                    mask[i,j]=255
+
+
+
+
+
+        return [mask, finalImg,finalImg]
+    
         
-
-
-
-
-        return [self.image, self.image, self.image]
+     
