@@ -177,7 +177,7 @@ class Filtering:
         order=0
         print("this is checckpoint 1 ")
         mask = np.zeros(shape)
-        mask1=self.get_gaussian_low_pass_filter(shape,cutoff)
+        
         center = [shape[0] / 2, shape[1] / 2]
         for i in range(shape[0]):
             for j in range(shape[1]):
