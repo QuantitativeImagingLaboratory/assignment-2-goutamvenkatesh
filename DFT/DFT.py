@@ -94,5 +94,10 @@ class DFT:
         takes as input:
         matrix: a 2d matrix
         returns a matrix representing magnitude of the dft"""
+        
+        for u in range(0,15):
+            for v in range(0,15):
+
+                outMat[u,v]=np.absolute(matrix[u,v])
 
         return matrix
