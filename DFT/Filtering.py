@@ -91,11 +91,16 @@ class Filtering:
         order: the order of the butterworth filter
         returns a butterworth low pass mask"""
         
-        mask=np.zeros(shape.np.float)
+        def dist( x, y):
+            return np.sqrt(np.sum(((x[0] - y[0]) ** 2) + ((x[1] - y[1]) ** 2)))
+
+        mask=np.zeros(shape)
         center=[shape[0]/2,shape[1]/2]
         for i in range(shape[0]):
             for j in range(shape[1]):
-                mask[i,j]=1/(1+np.power((self.dist([i,j],center)/cutoff),2*order))
+
+                mask[i,j]=1/(1+np.power((dist([i,j],center)/cutoff),2*order))
+
 
         return mask
 
