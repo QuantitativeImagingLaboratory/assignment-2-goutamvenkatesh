@@ -175,7 +175,6 @@ class Filtering:
         def dist( x, y):
             return np.sqrt(np.sum(((x[0] - y[0]) ** 2) + ((x[1] - y[1]) ** 2)))
         order=0
-        print("this is checckpoint 1 ")
         mask = np.zeros(shape)
         
         center = [shape[0] / 2, shape[1] / 2]
@@ -197,7 +196,7 @@ class Filtering:
         1. Full contrast stretch (fsimage)
         2. take negative (255 - fsimage)
         """
-
+        #written this part in the filtering() method itself.
 
         return image
 
