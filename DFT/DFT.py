@@ -97,7 +97,7 @@ class DFT:
         
         for u in range(0,15):
             for v in range(0,15):
-
-                outMat[u,v]=np.absolute(matrix[u,v])
+                matrix[u,v]=np.sqrt((math.cos(matrix[u,v])**2)+(math.sin(matrix[u,v])**2))
+                
 
         return matrix
