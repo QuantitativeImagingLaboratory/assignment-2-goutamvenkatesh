@@ -1,17 +1,20 @@
 # For this part of the assignment, You can use inbuilt functions to compute the fourier transform
 # You are welcome to use fft that are available in numpy and opencv
-
 import numpy as np
+import cmath
 import math
-
+from scipy.fftpack import fft
+from numpy.random import rand
+import cv2
 
 class Filtering:
     image = None
     filter = None
     cutoff = None
     order = None
-    
-    
+
+
+
 
     def __init__(self, image, filter_name, cutoff, order = 0):
         """initializes the variables frequency filtering on an input image
@@ -32,21 +35,23 @@ class Filtering:
             self.filter = self.get_butterworth_high_pass_filter
         elif filter_name == 'gaussian_l':
             self.filter = self.get_gaussian_low_pass_filter
-        elif filter_name == 'gaussian_h':
+        if filter_name == 'gaussian_h':
             self.filter = self.get_gaussian_high_pass_filter
 
         self.cutoff = cutoff
         self.order = order
 
 
-    def get_ideal_low_pass_filter(self, shape, cutoff):
+    def get_ideal_low_pass_filter(self, shape, cutoff,order):
         """Computes a Ideal low pass mask
         takes as input:
         shape: the shape of the mask to be generated
         cutoff: the cutoff frequency of the ideal filter
         returns a ideal low pass mask"""
-        
+        center = [shape[0] / 2, shape[1] / 2]
+
         rows, cols = shape
+        order=0
         mask = np.zeros((rows, cols),np.uint8)
         for i in range(rows):
             for j in range(cols):
@@ -56,11 +61,12 @@ class Filtering:
 
                 else:
                     mask[i, j] = 0
-                    
+
+
+
         return mask
 
-
-    def get_ideal_high_pass_filter(self, shape, cutoff):
+    def get_ideal_high_pass_filter(self, shape, cutoff,order):
         """Computes a Ideal high pass mask
         takes as input:
         shape: the shape of the mask to be generated
@@ -68,8 +74,8 @@ class Filtering:
         returns a ideal high pass mask"""
 
         #Hint: May be one can use the low pass filter function to get a high pass mask
-        
         rows, cols = shape
+        order=0
         mask = np.zeros((rows, cols), np.uint8)
         for i in range(rows):
             for j in range(cols):
@@ -80,8 +86,9 @@ class Filtering:
                 else:
                     mask[i, j] = 1
 
-        
+
         return mask
+
 
 
 
@@ -92,7 +99,7 @@ class Filtering:
         cutoff: the cutoff frequency of the butterworth filter
         order: the order of the butterworth filter
         returns a butterworth low pass mask"""
-        
+
         def dist( x, y):
             return np.sqrt(np.sum(((x[0] - y[0]) ** 2) + ((x[1] - y[1]) ** 2)))
 
@@ -106,6 +113,9 @@ class Filtering:
 
         return mask
 
+        
+
+
     def get_butterworth_high_pass_filter(self, shape, cutoff, order):
         """Computes a butterworth high pass mask
         takes as input:
@@ -115,7 +125,7 @@ class Filtering:
         returns a butterworth high pass mask"""
 
         #Hint: May be one can use the low pass filter function to get a high pass mask
-        
+
         def dist( x, y):
             return np.sqrt(np.sum(((x[0] - y[0]) ** 2) + ((x[1] - y[1]) ** 2)))
 
@@ -129,18 +139,19 @@ class Filtering:
 
         return mask
 
+        
 
-    def get_gaussian_low_pass_filter(self, shape, cutoff):
+
+    def get_gaussian_low_pass_filter(self, shape, cutoff,order):
         """Computes a gaussian low pass mask
         takes as input:
         shape: the shape of the mask to be generated
         cutoff: the cutoff frequency of the gaussian filter (sigma)
         returns a gaussian low pass mask"""
-        
         def dist( x, y):
             return np.sqrt(np.sum(((x[0] - y[0]) ** 2) + ((x[1] - y[1]) ** 2)))
 
-        
+        order=0
         mask = np.zeros(shape)
         center = [shape[0] / 2, shape[1] / 2]
         for i in range(shape[0]):
@@ -148,9 +159,11 @@ class Filtering:
                 mask[i, j] = np.exp(-(dist([i, j], center) ** 2) / (2 * (cutoff ** 2)))
 
         return mask
+
         
 
-    def get_gaussian_high_pass_filter(self, shape, cutoff):
+
+    def get_gaussian_high_pass_filter(self, shape, cutoff,order):
         """Computes a gaussian high pass mask
         takes as input:
         shape: the shape of the mask to be generated
@@ -159,8 +172,10 @@ class Filtering:
 
         #Hint: May be one can use the low pass filter function to get a high pass mask
 
+        
         def dist( x, y):
             return np.sqrt(np.sum(((x[0] - y[0]) ** 2) + ((x[1] - y[1]) ** 2)))
+        order=0
         print("this is checckpoint 1 ")
         mask = np.zeros(shape)
         mask1=self.get_gaussian_low_pass_filter(shape,cutoff)
@@ -173,6 +188,7 @@ class Filtering:
 
         return mask
 
+
     def post_process_image(self, image):
         """Post process the image to create a full contrast stretch of the image
         takes as input:
@@ -182,8 +198,7 @@ class Filtering:
         1. Full contrast stretch (fsimage)
         2. take negative (255 - fsimage)
         """
-        
-        #Written this as part of the filtering() method
+
 
         return image
 
@@ -207,14 +222,30 @@ class Filtering:
         Note: You do not have to do zero padding as discussed in class, the inbuilt functions takes care of that
         filtered image, magnitude of DFT, magnitude of filtered DFT: Make sure all images being returned have grey scale full contrast stretch and dtype=uint8 
         """
-        
+
         dft_image = np.fft.fft2(self.image)
         image_shift = np.fft.fftshift(dft_image)
-        mask = self.filter(np.shape(image_shift), self.cutoff) # there is a problem here. check once
+
+
+
+        mask = self.filter(np.shape(image_shift), self.cutoff,self.order)
+
+
+
         filtered_image = mask * image_shift
         inverse_shift = np.fft.ifftshift(filtered_image)
+        #mag_spectrum=np.log(np.abs(filtered_image))+1
+        len_filtered_image=len(filtered_image)
+        dft_filtered_image=filtered_image/len_filtered_image
+        dft_filtered_image=abs(dft_filtered_image)
+        dft_filtered_image=np.log(dft_filtered_image)
+        dft_final_inter=20*dft_filtered_image
+
+
+
         filtered_image2 = np.fft.ifft2(inverse_shift)
         ImgRows, ImgCols = filtered_image2.shape
+
 
         outMat = np.zeros((ImgRows, ImgCols), np.uint8)
         finalImg = np.zeros((ImgRows, ImgCols), np.uint8)
@@ -226,23 +257,17 @@ class Filtering:
         B = np.amax(outMat)
         A = np.amin(outMat)
 
-        difInt = B - A
+        denominator = B - A
         for u in range(0, ImgRows):
             for v in range(0, ImgCols):
-                firstMul = 255 / difInt
+                firstMul = 255 / denominator
                 finalVal = firstMul * (outMat[u, v] - A)
                 finalImg[u, v] = int(np.round(finalVal))
 
-        for i in range(ImgRows):
-            for j in range(ImgCols):
-                if(mask[i,j]!=0):
-                    mask[i,j]=255
+        mask=mask*80
 
 
 
 
 
-        return [mask, finalImg,finalImg]
-    
-        
-     
+        return [mask, dft_final_inter,finalImg]
