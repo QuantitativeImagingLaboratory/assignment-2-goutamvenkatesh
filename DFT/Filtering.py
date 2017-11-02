@@ -262,7 +262,7 @@ class Filtering:
                 finalVal = firstMul * (outMat[u, v] - A)
                 finalImg[u, v] = int(np.round(finalVal))
 
-        mask=mask*80
+        mask=mask*200
 
 
 
