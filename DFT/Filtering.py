@@ -114,11 +114,16 @@ class Filtering:
 
         #Hint: May be one can use the low pass filter function to get a high pass mask
         
-        mask=np.zeros(shape.np.float)
+        def dist( x, y):
+            return np.sqrt(np.sum(((x[0] - y[0]) ** 2) + ((x[1] - y[1]) ** 2)))
+
+        mask=np.zeros(shape)
         center=[shape[0]/2,shape[1]/2]
         for i in range(shape[0]):
             for j in range(shape[1]):
-                mask[i,j]=1/(1+np.power(cutoff/(self.dist([i,j],center)),2*order))
+
+                mask[i,j]=1/(1+(np.power(cutoff/(dist([i,j],center)),2*order)))
+
 
         return mask
 
@@ -130,16 +135,16 @@ class Filtering:
         cutoff: the cutoff frequency of the gaussian filter (sigma)
         returns a gaussian low pass mask"""
         
-        mask=np.zeros(shape.np.float)
-        sigma=cutoff
-        center=[shape[0]/2,shape[1]/2]
-        for i in range(shape[0]):
-            for j in range(shape[1]):
-
-                mask[i, j] = np.exp(-(self.dist([i, j], center) ** 2) / (2 * (sigma ** 2)))
-
+        def dist( x, y):
+            return np.sqrt(np.sum(((x[0] - y[0]) ** 2) + ((x[1] - y[1]) ** 2)))
 
         
+        mask = np.zeros(shape)
+        center = [shape[0] / 2, shape[1] / 2]
+        for i in range(shape[0]):
+            for j in range(shape[1]):
+                mask[i, j] = np.exp(-(dist([i, j], center) ** 2) / (2 * (cutoff ** 2)))
+
         return mask
         
 
@@ -152,16 +157,18 @@ class Filtering:
 
         #Hint: May be one can use the low pass filter function to get a high pass mask
 
-        mask=np.zeros(shape.np.float)
-        sigma=cutoff
-        center=[shape[0]/2,shape[1]/2]
+        def dist( x, y):
+            return np.sqrt(np.sum(((x[0] - y[0]) ** 2) + ((x[1] - y[1]) ** 2)))
+        print("this is checckpoint 1 ")
+        mask = np.zeros(shape)
+        mask1=self.get_gaussian_low_pass_filter(shape,cutoff)
+        center = [shape[0] / 2, shape[1] / 2]
         for i in range(shape[0]):
             for j in range(shape[1]):
 
-                mask[i, j] = 1-np.exp(-(self.dist([i, j], center) ** 2) / (2 * (sigma ** 2)))
+                mask[i, j] = 1-np.exp((-(dist([i, j], center)) ** 2) / (2 * (cutoff ** 2)))
 
 
-        
         return mask
 
     def post_process_image(self, image):
@@ -173,7 +180,8 @@ class Filtering:
         1. Full contrast stretch (fsimage)
         2. take negative (255 - fsimage)
         """
-
+        
+        #Written this as part of the filtering() method
 
         return image
 
