@@ -67,19 +67,20 @@ class Filtering:
 
         #Hint: May be one can use the low pass filter function to get a high pass mask
         
-        center = [shape[0] / 2, shape[1] / 2]
-        mask = np.zeros(shape)
         rows, cols = shape
+        mask = np.zeros((rows, cols), np.uint8)
         for i in range(rows):
             for j in range(cols):
-                if ((i-(center[0]/2))**2+(j-(center[1]/2))**2)**0.5 <=cutoff:
-                    mask[i,j]=0
+                value = math.sqrt((i - (rows / 2)) ** 2 + (j - (cols / 2)) ** 2)
+                if (value <= cutoff):
+                    mask[i, j] = 0
 
                 else:
-                    mask[i,j]=1
+                    mask[i, j] = 1
 
         
         return mask
+
 
 
     def get_butterworth_low_pass_filter(self, shape, cutoff, order):
