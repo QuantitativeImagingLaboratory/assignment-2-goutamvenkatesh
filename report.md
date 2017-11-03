@@ -75,10 +75,16 @@
   All the steps provided in the method was followed, which included -
   
   -Applying a fourier transform on the image which results in the image being transformed to the frequency domain.
+  
   -Shifting the lower frequencies to the top corners by using fftshift() method.
+  
   -Performing convolution by using a desired mask.
+  
   -Post processing is done logarithmically to display the DFT of the filtered image.
+  
   -The lower frequencies are shifted back to the center.
+  
   -Inverse transform is performed on this to get the DFT of the filtered image.
+  
   -This is then brought back into the spatial domain and displayed in the output folder.
   
